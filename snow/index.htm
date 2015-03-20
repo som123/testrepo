@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+	<title>Snow</title>
+	<script src="Snow_files/jquery.js"></script>
+	<link href="Snow_files/css.css" rel="stylesheet" type="text/css">
+<style>
+
+img.bg {
+        /* Set rules to fill background */
+        min-height: 100%;
+        min-width: 1024px;
+
+        /* Set up proportionate scaling */
+        width: 100%;
+        height: auto;
+
+        /* Set up positioning */
+        position: fixed;
+        top: 0;
+        left: 0;
+}
+
+h1 {
+	font-family: 'Chelsea Market', cursive;
+	color: #FFF;
+	font-size: 90px;
+	text-align: center;
+	line-height: 95px;
+	font-weight: normal;
+	margin-top: 350px;
+	text-shadow: 5px 5px 5px #000;
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+        img.bg {
+                left: 50%;
+                margin-left: -512px;   /* 50% */
+        }
+}
+
+html, body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	line-height: 16px;
+	padding: 0;
+	margin: 0;
+	color: #333;
+}
+
+.bar {
+	background-color: #111;
+	color: #f0f0f0;
+	box-shadow: 0px 0px 2px #333;
+	line-height: 25px;
+	padding: 0px 20px;
+	opacity: 0.7;
+}
+.bar:hover {
+	opacity: 1;
+}
+.bar a {
+	color: #DDD;
+}
+.bar a:hover {
+	color: #FFFFFF;
+}
+
+a { color: #CCC; text-decoration: none; }
+a:hover { color: #FFFFFF; }
+	
+	#canvas {
+		border: 1px solid black;
+		position: absolute;
+		z-index: 10000;
+	}
+	
+	#flake {
+		color: #fff;
+		position: absolute;
+		font-size: 25px;
+		top: -50px;
+	}
+	
+	#page {
+		position: relative;
+	}
+	
+</style></head>
+
+
+<body>
+
+	
+<img src="Snow_files/town2.jpg" class="bg">
+
+<div id="page">
+	
+	<h1 ><a href="" style="color:peachpuff"><img src="Snow_files/wishes.jpg"> <br></a></h1>
+
+	
+</div>
+	
+	<div id="flake">&#10052;</div>
+	<div id="flake">&#10052;</div>
+	<div id="flake">&#10052;</div>
+
+<script>
+
+
+var t = setInterval(
+	function(){
+		var documentHeight 		= $(document).height();
+		var startPositionLeft 	= Math.random() * $(document).width() - 100;
+		var startOpacity		= 0.5 + Math.random();
+		var sizeFlake			= 10 + Math.random() * 50;
+		var endPositionTop		= documentHeight - 40;
+		var endPositionLeft		= startPositionLeft - 100 + Math.random() * 200;
+		var durationFall		= documentHeight * 10 + Math.random() * 5000;
+		$('#flake')
+			.clone()
+			.appendTo('body')
+			.css(
+				{
+					left: startPositionLeft,
+					opacity: startOpacity,
+					'font-size': sizeFlake
+				}
+			)
+			.animate(
+				{
+					top: endPositionTop,
+					left: endPositionLeft,
+					opacity: 0.2
+				},
+				durationFall,
+				'linear',
+				function() {
+					$(this).remove()
+				}
+			);
+	}, 500);
+
+
+
+
+	var snow = {};
+	var snowflex = {};
+
+	snowflex.create  = function(){
+		var flex = document.createElement('div');
+			flex.innerHTML		 	= "&#10052;";
+			flex.style.fontSize 	= 10 + Math.random() * 20 + 'px';
+			flex.style.top 			= - 50 + Math.random() * 20 + 'px';
+			flex.style.left 		= Math.random() * 1500 + 'px';
+			flex.style.position 	= "absolute";
+			flex.style.color 		= "#F3F3F3";
+			flex.style.opacity		= Math.random();
+			document.getElementsByTagName('body')[0].appendChild(flex);
+			return flex;
+	};
+
+
+	snow.snowflex = function(){
+		var flex = snowflex.create();
+		var x = -1 + Math.random() * 2;
+		var t = setInterval( 
+					function(){
+						flex.style.top 	= parseInt(flex.style.top) +  5 + 'px';
+						flex.style.left = parseInt(flex.style.left) +  x + 'px';
+						if (parseInt(flex.style.top) > 1500) {
+							clearInterval(t);
+							document.getElementsByTagName('body')[0].removeChild(flex);
+						}			
+					}, 45 + Math.random() * 20);
+	};
+	
+	snow.storm = function(){
+		var t	= setInterval(
+					function(){
+						snow.snowflex();
+					}, 500);
+	};
+
+	//snow.storm();
+
+	var fog = {};
+
+	fog.draw = function(ctx, x, y){
+		
+			ctx.fillStyle = "rgba( 255, 255, 255, " + Math.random() + " )";
+			ctx.arc( x, y, 10,0,Math.PI*2,true);
+			ctx.closePath();
+			ctx.fill();
+
+	};
+
+
+	fog.start = function(){
+		var ctx = document.getElementById('canvas').getContext("2d");
+		var x = 0;
+		var y = 0;
+		var t = setInterval( 
+					function(){
+						
+						x = 300 + 300*Math.sin(x);
+						y = 300 + 300* -Math.cos(x);
+						 
+						x += 2;
+						fog.draw(ctx, x, y);
+
+					}, 100);
+		
+	};
+	
+	//fog.start();
+
+</script>
+
+
+
+<div style="left: 1035.86px; opacity: 0.291975; font-size: 11.5007px; top: 511.995px;" id="flake">&#10052;</div><div style="left: 160.866px; opacity: 0.260422; font-size: 23.5265px; top: 518.345px;" id="flake">&#10052;</div><div style="left: 1017.49px; opacity: 0.373336; font-size: 13.4376px; top: 418.605px;" id="flake">&#10052;</div><div style="left: 52.0618px; opacity: 0.432621; font-size: 14.3201px; top: 400.357px;" id="flake">&#10052;</div><div style="left: 735.44px; opacity: 0.26665; font-size: 15.6461px; top: 473.381px;" id="flake">&#10052;</div><div style="left: -41.0252px; opacity: 0.514702; font-size: 20.0031px; top: 335.205px;" id="flake">&#10052;</div><div style="left: 935.882px; opacity: 0.577916; font-size: 18.2374px; top: 285.029px;" id="flake">&#10052;</div><div style="left: 531.522px; opacity: 0.369731; font-size: 15.8176px; top: 450.276px;" id="flake">&#10052;</div><div style="left: 1042.22px; opacity: 0.488769; font-size: 26.3415px; top: 331.622px;" id="flake">&#10052;</div><div style="left: 975.86px; opacity: 0.468685; font-size: 20.9306px; top: 232.514px;" id="flake">&#10052;</div><div style="left: 597.129px; opacity: 0.365706; font-size: 25.1551px; top: 303.426px;" id="flake">&#10052;</div><div style="left: -53.717px; opacity: 0.740313; font-size: 17.7966px; top: 143.793px;" id="flake">&#10052;</div><div style="left: 587.062px; opacity: 0.691843; font-size: 15.6972px; top: 155.276px;" id="flake">&#10052;</div><div style="left: 1220.69px; opacity: 0.607576; font-size: 10.0581px; top: 87.5435px;" id="flake">&#10052;</div><div style="left: 1224.65px; opacity: 0.473721; font-size: 19.127px; top: 105.893px;" id="flake">&#10052;</div><div style="left: -25.3979px; opacity: 0.913232; font-size: 11.9085px; top: 18.8717px;" id="flake">&#10052;</div><div style="left: 692.089px; opacity: 0.503274; font-size: 26.2226px; top: -36.8137px;" id="flake">&#10052;</div><div style="left: 416.048px; opacity: 0.519706; font-size: 28.9096px; top: -37.3875px;" id="flake">&#10052;</div></body></html>
